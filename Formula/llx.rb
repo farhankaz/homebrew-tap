@@ -28,6 +28,19 @@ class Llx < Formula
     ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
     COPYONLY
 )"
+  inreplace "CMakeLists.txt", "add_library(llama_common STATIC
+    llama.cpp/common/sampling.cpp
+    llama.cpp/common/common.cpp
+    llama.cpp/common/log.cpp
+    llama.cpp/common/console.cpp
+    llama.cpp/common/arg.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
+)", "add_library(llama_common STATIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/examples/common/common.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/examples/common/console.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/examples/common/grammar-parser.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
+)"
   system "cmake", "-S", ".", "-B", "build", "-DCMAKE_BUILD_TYPE=Release", "-DLLAMA_CURL=ON", "-DLLAMA_STANDALONE=ON"
   system "cmake", "--build", "build"
   bin.install "build/llx"
