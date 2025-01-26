@@ -80,7 +80,10 @@ class Llx < Formula
 
       target_compile_definitions(llxd PRIVATE LLX_VERSION="${LLX_VERSION}" LLAMA_USE_CURL GGML_USE_CURL)
       target_link_libraries(llxd PRIVATE llama CURL::libcurl)
-      target_include_directories(llxd PRIVATE llama.cpp)
+      target_include_directories(llxd PRIVATE 
+          llama.cpp
+          llama.cpp/common
+      )
 
       # llx executable
       add_executable(llx
@@ -91,7 +94,10 @@ class Llx < Formula
 
       target_compile_definitions(llx PRIVATE LLX_VERSION="${LLX_VERSION}" LLAMA_USE_CURL GGML_USE_CURL)
       target_link_libraries(llx PRIVATE llama CURL::libcurl)
-      target_include_directories(llx PRIVATE llama.cpp)
+      target_include_directories(llx PRIVATE 
+          llama.cpp
+          llama.cpp/common
+      )
     EOS
 
     (buildpath/"CMakeLists.txt").write cmake_content
