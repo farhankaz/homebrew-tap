@@ -14,7 +14,7 @@ class Llx < Formula
 
   def install
     system "rm", "-rf", "llama.cpp"
-    system "git", "clone", "--recursive", "--branch", "gguf-v0.4.0", "https://github.com/ggerganov/llama.cpp.git"
+    system "git", "clone", "--recursive", "https://github.com/ggerganov/llama.cpp.git"
 
     system "cmake", "-S", ".", "-B", "build", "-DCMAKE_BUILD_TYPE=Release", "-DLLAMA_CURL=ON", "-DLLAMA_STANDALONE=ON"
     system "cmake", "--build", "build"
