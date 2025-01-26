@@ -11,46 +11,50 @@ class Llx < Formula
   depends_on :macos => :ventura
   depends_on arch: :arm64
   def install
-  system "rm", "-rf", "llama.cpp"
-  system "git", "clone", "--depth", "1", "--branch", "gguf-v0.4.0", "https://github.com/ggerganov/llama.cpp.git"
-  (buildpath/"build-info.cpp").write <<~EOS
-  const char * BUILD_NUMBER = "0"
-  const char * BUILD_COMMIT = "local"
-  const char * BUILD_COMPILER = "unknown"
-  const char * BUILD_TARGET = "native"
-  EOS
-  inreplace "CMakeLists.txt", "configure_file(
-    llama.cpp/common/build-info.cpp.in
-    ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
-    @ONLY
-)", "configure_file(
-    ${CMAKE_CURRENT_SOURCE_DIR}/build-info.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
-    COPYONLY
-)"
-  inreplace "CMakeLists.txt", 'add_library(llama_common STATIC
-    llama.cpp/common/sampling.cpp
-    llama.cpp/common/common.cpp
-    llama.cpp/common/log.cpp
-    llama.cpp/common/console.cpp
-    llama.cpp/common/arg.cpp
-    llama.cpp/common/ngram-cache.cpp
-    llama.cpp/common/speculative.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
-)', 'add_library(llama_common STATIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/sampling.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/common.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/log.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/console.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/arg.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/ngram-cache.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/speculative.cpp
-    ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
-)'
-  system "cmake", "-S", ".", "-B", "build", "-DCMAKE_BUILD_TYPE=Release", "-DLLAMA_CURL=ON", "-DLLAMA_STANDALONE=ON"
-  system "cmake", "--build", "build"
-  bin.install "build/llx"
-  bin.install "build/llxd"
+    system "rm", "-rf", "llama.cpp"
+    system "git", "clone", "--depth", "1", "--branch", "gguf-v0.4.0", "https://github.com/ggerganov/llama.cpp.git"
+
+    (buildpath/"build-info.cpp").write <<~EOS
+      const char * BUILD_NUMBER = "0"
+      const char * BUILD_COMMIT = "local"
+      const char * BUILD_COMPILER = "unknown"
+      const char * BUILD_TARGET = "native"
+    EOS
+
+    inreplace "CMakeLists.txt", 'configure_file(
+      llama.cpp/common/build-info.cpp.in
+      ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
+      @ONLY
+    )', 'configure_file(
+      ${CMAKE_CURRENT_SOURCE_DIR}/build-info.cpp
+      ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
+      COPYONLY
+    )'
+
+    inreplace "CMakeLists.txt", 'add_library(llama_common STATIC
+      llama.cpp/common/sampling.cpp
+      llama.cpp/common/common.cpp
+      llama.cpp/common/log.cpp
+      llama.cpp/common/console.cpp
+      llama.cpp/common/arg.cpp
+      llama.cpp/common/ngram-cache.cpp
+      llama.cpp/common/speculative.cpp
+      ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
+    )', 'add_library(llama_common STATIC
+      ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/sampling.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/common.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/log.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/console.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/arg.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/ngram-cache.cpp
+      ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/speculative.cpp
+      ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
+    )'
+
+    system "cmake", "-S", ".", "-B", "build", "-DCMAKE_BUILD_TYPE=Release", "-DLLAMA_CURL=ON", "-DLLAMA_STANDALONE=ON"
+    system "cmake", "--build", "build"
+    bin.install "build/llx"
+    bin.install "build/llxd"
   end
   service do
   run [opt_bin/"llxd"]
