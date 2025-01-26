@@ -7,14 +7,12 @@ class Llx < Formula
   head "https://github.com/farhankaz/llx.git", branch: "main"
   depends_on "cmake" => :build
   depends_on "curl"
+  depends_on "git"
   depends_on :macos => :ventura
   depends_on arch: :arm64
   def install
-  system "git", "init"
-  system "git", "remote", "add", "origin", "https://github.com/farhankaz/llx.git"
-  system "git", "fetch", "origin", "v0.0.1"
-  system "git", "checkout", "FETCH_HEAD"
-  system "git", "submodule", "update", "--init", "--recursive"
+  system "rm", "-rf", "llama.cpp"
+  system "git", "clone", "--depth", "1", "--branch", "gguf-v0.4.0", "https://github.com/ggerganov/llama.cpp.git"
   system "cmake", "-S", ".", "-B", "build", "-DCMAKE_BUILD_TYPE=Release", "-DLLAMA_CURL=ON", "-DLLAMA_STANDALONE=ON"
   system "cmake", "--build", "build"
   bin.install "build/llx"
