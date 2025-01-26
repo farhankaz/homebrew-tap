@@ -13,7 +13,7 @@ class Llx < Formula
   def install
   system "rm", "-rf", "llama.cpp"
   system "git", "clone", "--depth", "1", "--branch", "gguf-v0.4.0", "https://github.com/ggerganov/llama.cpp.git"
-  (buildpath/"llama.cpp/common/build-info.cpp").write <<~EOS
+  (buildpath/"build-info.cpp").write <<~EOS
   const char * BUILD_NUMBER = "0"
   const char * BUILD_COMMIT = "local"
   const char * BUILD_COMPILER = "unknown"
@@ -23,7 +23,11 @@ class Llx < Formula
     llama.cpp/common/build-info.cpp.in
     ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
     @ONLY
-)", "# Build info is created directly"
+)", "configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/build-info.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
+    COPYONLY
+)"
   system "cmake", "-S", ".", "-B", "build", "-DCMAKE_BUILD_TYPE=Release", "-DLLAMA_CURL=ON", "-DLLAMA_STANDALONE=ON"
   system "cmake", "--build", "build"
   bin.install "build/llx"
