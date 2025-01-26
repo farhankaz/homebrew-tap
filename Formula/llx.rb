@@ -83,6 +83,7 @@ class Llx < Formula
       target_include_directories(llxd PRIVATE 
           llama.cpp
           llama.cpp/common
+          llama.cpp/include
       )
 
       # llx executable
@@ -97,6 +98,7 @@ class Llx < Formula
       target_include_directories(llx PRIVATE 
           llama.cpp
           llama.cpp/common
+          llama.cpp/include
       )
     EOS
 
