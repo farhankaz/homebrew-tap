@@ -21,6 +21,8 @@ class Llx < Formula
       const char * BUILD_TARGET = "native"
     EOS
 
+    system "rm", "-f", "CMakeLists.txt"
+
     cmake_content = <<~EOS
       cmake_minimum_required(VERSION 3.12)
       project(llx)
