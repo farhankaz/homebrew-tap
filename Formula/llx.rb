@@ -10,6 +10,11 @@ class Llx < Formula
   depends_on :macos => :ventura
   depends_on arch: :arm64
   def install
+  system "git", "init"
+  system "git", "remote", "add", "origin", "https://github.com/farhankaz/llx.git"
+  system "git", "fetch", "origin", "v0.0.1"
+  system "git", "checkout", "FETCH_HEAD"
+  system "git", "submodule", "update", "--init", "--recursive"
   system "cmake", "-S", ".", "-B", "build", "-DCMAKE_BUILD_TYPE=Release", "-DLLAMA_CURL=ON", "-DLLAMA_STANDALONE=ON"
   system "cmake", "--build", "build"
   bin.install "build/llx"
