@@ -19,9 +19,11 @@ class Llx < Formula
   const char * BUILD_COMPILER = "unknown"
   const char * BUILD_TARGET = "native"
   EOS
-  inreplace "CMakeLists.txt", "configure_file(", "# configure_file("
-  inreplace "CMakeLists.txt", "  @ONLY", "  # @ONLY"
-  inreplace "CMakeLists.txt", ")", ")"
+  inreplace "CMakeLists.txt", "configure_file(
+    llama.cpp/common/build-info.cpp.in
+    ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
+    @ONLY
+)", "# Build info is created directly"
   system "cmake", "-S", ".", "-B", "build", "-DCMAKE_BUILD_TYPE=Release", "-DLLAMA_CURL=ON", "-DLLAMA_STANDALONE=ON"
   system "cmake", "--build", "build"
   bin.install "build/llx"
