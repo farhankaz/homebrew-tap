@@ -28,14 +28,16 @@ class Llx < Formula
     ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
     COPYONLY
 )"
-  inreplace "CMakeLists.txt", "add_library(llama_common STATIC
+  inreplace "CMakeLists.txt", 'add_library(llama_common STATIC
     llama.cpp/common/sampling.cpp
     llama.cpp/common/common.cpp
     llama.cpp/common/log.cpp
     llama.cpp/common/console.cpp
     llama.cpp/common/arg.cpp
+    llama.cpp/common/ngram-cache.cpp
+    llama.cpp/common/speculative.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
-)", "add_library(llama_common STATIC
+)', 'add_library(llama_common STATIC
     ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/sampling.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/common.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/log.cpp
@@ -44,7 +46,7 @@ class Llx < Formula
     ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/ngram-cache.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/speculative.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
-)"
+)'
   system "cmake", "-S", ".", "-B", "build", "-DCMAKE_BUILD_TYPE=Release", "-DLLAMA_CURL=ON", "-DLLAMA_STANDALONE=ON"
   system "cmake", "--build", "build"
   bin.install "build/llx"
