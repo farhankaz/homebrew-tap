@@ -5,24 +5,26 @@ class Llx < Formula
   sha256 "370f0c555dbe8b6457725197eab087c27b24652d354109e112f8c65e3e32a3fa"
   license "MIT"
   head "https://github.com/farhankaz/llx.git", branch: "main"
+
   depends_on "cmake" => :build
   depends_on "curl"
   depends_on "git"
   depends_on :macos => :ventura
   depends_on arch: :arm64
+
   def install
     system "rm", "-rf", "llama.cpp"
     system "git", "clone", "--depth", "1", "--branch", "gguf-v0.4.0", "https://github.com/ggerganov/llama.cpp.git"
 
+    # Create build-info.cpp with required variables
     (buildpath/"build-info.cpp").write <<~EOS
-      const char * BUILD_NUMBER = "0"
-      const char * BUILD_COMMIT = "local"
-      const char * BUILD_COMPILER = "unknown"
-      const char * BUILD_TARGET = "native"
+      const char * BUILD_NUMBER = "0";
+      const char * BUILD_COMMIT = "local";
+      const char * BUILD_COMPILER = "unknown";
+      const char * BUILD_TARGET = "native";
     EOS
 
-    system "rm", "-f", "CMakeLists.txt"
-
+    # Create a new CMakeLists.txt that properly handles the build
     cmake_content = <<~EOS
       cmake_minimum_required(VERSION 3.12)
       project(llx)
@@ -67,21 +69,6 @@ class Llx < Formula
           COPYONLY
       )
 
-      # Create common library for llama.cpp utilities
-      add_library(llama_common STATIC
-          llama.cpp/common/sampling.cpp
-          llama.cpp/common/common.cpp
-          llama.cpp/common/log.cpp
-          llama.cpp/common/console.cpp
-          llama.cpp/common/arg.cpp
-          llama.cpp/common/ngram-cache.cpp
-          llama.cpp/common/speculative.cpp
-          ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
-      )
-      target_include_directories(llama_common PUBLIC llama.cpp)
-      target_link_libraries(llama_common PUBLIC llama)
-      target_compile_definitions(llama_common PUBLIC LLAMA_USE_CURL GGML_USE_CURL)
-
       # llxd executable
       add_executable(llxd
           src/llxd/main.cpp
@@ -89,7 +76,7 @@ class Llx < Formula
       )
 
       target_compile_definitions(llxd PRIVATE LLX_VERSION="${LLX_VERSION}" LLAMA_USE_CURL GGML_USE_CURL)
-      target_link_libraries(llxd PRIVATE llama_common CURL::libcurl)
+      target_link_libraries(llxd PRIVATE llama CURL::libcurl)
       target_include_directories(llxd PRIVATE llama.cpp)
 
       # llx executable
@@ -100,7 +87,7 @@ class Llx < Formula
       )
 
       target_compile_definitions(llx PRIVATE LLX_VERSION="${LLX_VERSION}" LLAMA_USE_CURL GGML_USE_CURL)
-      target_link_libraries(llx PRIVATE llama_common CURL::libcurl)
+      target_link_libraries(llx PRIVATE llama CURL::libcurl)
       target_include_directories(llx PRIVATE llama.cpp)
     EOS
 
@@ -111,15 +98,17 @@ class Llx < Formula
     bin.install "build/llx"
     bin.install "build/llxd"
   end
+
   service do
-  run [opt_bin/"llxd"]
-  keep_alive true
-  error_log_path var/"log/llxd.log"
-  log_path var/"log/llxd.log"
-  working_dir HOMEBREW_PREFIX
+    run [opt_bin/"llxd"]
+    keep_alive true
+    error_log_path var/"log/llxd.log"
+    log_path var/"log/llxd.log"
+    working_dir HOMEBREW_PREFIX
   end
+
   test do
-  system "#{bin}/llx", "--version"
-  system "#{bin}/llxd", "--version"
+    system "#{bin}/llx", "--version"
+    system "#{bin}/llxd", "--version"
   end
-  end
+end
