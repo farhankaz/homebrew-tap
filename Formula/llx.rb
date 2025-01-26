@@ -24,6 +24,9 @@ class Llx < Formula
       const char * BUILD_TARGET = "native";
     EOS
 
+    # Force remove existing CMakeLists.txt
+    rm_f "CMakeLists.txt"
+
     # Create a new CMakeLists.txt that properly handles the build
     cmake_content = <<~EOS
       cmake_minimum_required(VERSION 3.12)
