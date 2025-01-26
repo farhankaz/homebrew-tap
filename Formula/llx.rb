@@ -36,9 +36,13 @@ class Llx < Formula
     llama.cpp/common/arg.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
 )", "add_library(llama_common STATIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/examples/common/common.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/examples/common/console.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/examples/common/grammar-parser.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/sampling.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/common.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/log.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/console.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/arg.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/ngram-cache.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/llama.cpp/common/speculative.cpp
     ${CMAKE_CURRENT_BINARY_DIR}/build-info.cpp
 )"
   system "cmake", "-S", ".", "-B", "build", "-DCMAKE_BUILD_TYPE=Release", "-DLLAMA_CURL=ON", "-DLLAMA_STANDALONE=ON"
