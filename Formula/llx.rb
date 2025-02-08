@@ -13,25 +13,16 @@ class Llx < Formula
   depends_on arch: :arm64
 
   def install
-    system "rm", "-rf", "llama.cpp"
-    system "git", "clone", "--recursive", "https://github.com/ggerganov/llama.cpp.git"
+    system "git", "submodule", "update", "--init", "--recursive"
+    system "mkdir", "-p", "build"
 
     system "cmake", "-S", ".", "-B", "build", "-DCMAKE_BUILD_TYPE=Release", "-DLLAMA_CURL=ON", "-DLLAMA_STANDALONE=ON"
     system "cmake", "--build", "build"
     bin.install "build/llx"
-    bin.install "build/llxd"
   end
 
-  service do
-    run [opt_bin/"llxd"]
-    keep_alive true
-    error_log_path var/"log/llxd.log"
-    log_path var/"log/llxd.log"
-    working_dir HOMEBREW_PREFIX
-  end
 
   test do
     system "#{bin}/llx", "--version"
-    system "#{bin}/llxd", "--version"
   end
 end
