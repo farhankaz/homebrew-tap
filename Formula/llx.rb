@@ -1,8 +1,8 @@
 class Llx < Formula
   desc "Unix-based system utility for interacting with LLM models using llama.cpp"
   homepage "https://github.com/farhankaz/llx"
-  url "https://github.com/farhankaz/llx/archive/refs/tags/v0.0.2.tar.gz"
-  sha256 "370f0c555dbe8b6457725197eab087c27b24652d354109e112f8c65e3e32a3fa"
+  url "https://github.com/farhankaz/llx/archive/refs/tags/v0.0.3.tar.gz"
+  sha256 "25f861979b20bcb35d5ff98dd9c58b4d8400f875b6fd948f570db56ac05f7f73"
   license "MIT"
   head "https://github.com/farhankaz/llx.git", branch: "main"
 
