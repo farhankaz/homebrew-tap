@@ -13,16 +13,41 @@ class Llx < Formula
   depends_on arch: :arm64
 
   def install
-    system "git", "submodule", "update", "--init", "--recursive"
-    system "mkdir", "-p", "build"
-
-    system "cmake", "-S", ".", "-B", "build", "-DCMAKE_BUILD_TYPE=Release", "-DLLAMA_CURL=ON", "-DLLAMA_STANDALONE=ON"
-    system "cmake", "--build", "build"
+    system "rm", "-rf", "llama.cpp"
+    system "git", "clone", "--recursive", "https://github.com/ggerganov/llama.cpp.git"
+    
+    # Build everything in a single step
+    mkdir_p "build"
+    
+    # Set environment for compilation
+    ENV.append "CXXFLAGS", "-I#{buildpath}/llama.cpp"
+    ENV.append "CXXFLAGS", "-I#{buildpath}/llama.cpp/common"
+    ENV.append "CXXFLAGS", "-I#{buildpath}/llama.cpp/include"
+    
+    # Configure with all components and chat support
+    system "cmake", "-S", ".", "-B", "build",
+           "-DCMAKE_BUILD_TYPE=Release",
+           "-DCMAKE_OSX_ARCHITECTURES=arm64",
+           "-DLLAMA_NATIVE=OFF",
+           "-DLLAMA_STATIC=ON",
+           "-DLLAMA_STANDALONE=ON",
+           "-DLLAMA_BUILD_EXAMPLES=OFF",
+           "-DLLAMA_BUILD_TESTS=OFF",
+           "-DLLAMA_BUILD_COMMON=ON",
+           "-DLLAMA_COMMON_CHAT=ON",
+           "-DLLAMA_DIR=#{buildpath}/llama.cpp",
+           "-DCMAKE_PREFIX_PATH=#{buildpath}/llama.cpp",
+           "-DCMAKE_FIND_DEBUG_MODE=ON",
+           "-DCMAKE_VERBOSE_MAKEFILE=ON"
+    
+    system "cmake", "--build", "build", "--verbose"
     bin.install "build/llx"
+    bin.install "build/llxd"
   end
 
 
   test do
     system "#{bin}/llx", "--version"
+    system "#{bin}/llxd", "--version"
   end
 end
