@@ -2,7 +2,7 @@ class Snapsense < Formula
   desc "Intelligent screenshot renaming tool for Apple Silicon Macs using Claude AI"
   homepage "https://github.com/farhankaz/snapsense"
   url "https://github.com/farhankaz/snapsense/archive/refs/tags/0.1.0.tar.gz"
-  sha256 "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5"
+  sha256 "82cc57d7032d5dbd2ade5f557474af4a8ac5d00f160c4b97eeebc00ae8b2b103"
   license "MIT"
   
   depends_on "python@3.12"
