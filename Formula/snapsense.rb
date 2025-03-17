@@ -9,21 +9,6 @@ class Snapsense < Formula
   depends_on :macos
   depends_on arch: :arm64
 
-  resource "anthropic" do
-    url "https://files.pythonhosted.org/packages/0f/43/9a0f2e3a93f1e0a29a3e6b4a4b5eef8e9a9d30c6a2b1e5ea4b6a0b8a1e4/anthropic-0.18.1.tar.gz"
-    sha256 "6b2b5c5e2e9d6c1e9c7262e35e2a94d79a1e3c8a5e3e4e1d8f1b9c7a8e1e9b9a"
-  end
-
-  resource "watchdog" do
-    url "https://files.pythonhosted.org/packages/95/a6/d6ef450ed3eb3ab185f9f85ded8e41a064a2e9c6b3c93ff3304dfc1a5d0/watchdog-3.0.0.tar.gz"
-    sha256 "4d98a320595da7a7c5a18fc48cb633c2e73cda78f93cac2ef42d42bf609a33f9"
-  end
-
-  resource "configparser" do
-    url "https://files.pythonhosted.org/packages/82/97/930be4777f6b08fc7c248e4ee45ad6e7a9e0f32efb537cf0e32bb32a36c0/configparser-5.3.0.tar.gz"
-    sha256 "8be267824b541c09b08db124917f48ab525a6c3e837011f3130781a224c57090"
-  end
-
   def install
     # Create a virtual environment in the Homebrew prefix
     venv = virtualenv_create(libexec, "python3.12")
