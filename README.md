@@ -36,42 +36,6 @@ brew install farhankaz/tap/llx
 - curl
 - git
 
-### snapsense
-
-An intelligent screenshot renaming tool for Apple Silicon Macs using Claude AI.
-
-**Repository:** [https://github.com/farhankaz/snapsense](https://github.com/farhankaz/snapsense)
-
-**Installation:**
-
-```bash
-brew install farhankaz/tap/snapsense
-```
-
-**Features:**
-- Automatically renames screenshots based on their content using Claude AI
-- Monitors your Desktop for new screenshots
-- Configurable settings
-
-**Dependencies:**
-- python@3.12
-- uv
-- Requires Apple Silicon Mac (arm64)
-
-**Usage:**
-
-Snapsense requires an Anthropic API key to function. Set your API key in your environment:
-
-```bash
-export ANTHROPIC_API_KEY="your-api-key-here"
-```
-
-Commands:
-- Start: `snapsense start`
-- Check status: `snapsense status`
-- Stop: `snapsense stop`
-- Edit configuration: `snapsense config`
-
 ## License
 
 All formulas in this repository are licensed under the MIT License.
