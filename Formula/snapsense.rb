@@ -12,7 +12,7 @@ class Snapsense < Formula
   depends_on arch: :arm64
   
   resource "anthropic" do
-    url "https://files.pythonhosted.org/packages/f9/f1/a5213af4710d6e1f9b83208a4b158355d1a95eb4ae0906c7580aa0e0f1d1/anthropic-0.20.0.tar.gz"
+    url "https://files.pythonhosted.org/packages/e3/bb/af5c28b27039224b309ce21df38c2285072b17c7804efb1e604c47a6bdb7/anthropic-0.20.0.tar.gz"
     sha256 "f9f1a5213af4710d6e1f9b83208a4b158355d1a95eb4ae0906c7580aa0e0f1d1"
   end
   
